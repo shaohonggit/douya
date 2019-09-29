@@ -1,0 +1,11 @@
+
+  <view class="weui-panel">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cells weui-cells_after-title"  wx:for="{{rank}}" wx:key="{{item.number}}">
+        <navigator url="/pages/focus/describe?index={{item.number}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">{{item.username}}</view>
+            <view class="weui-cell__ft">{{item[type]}}</view>
+        </navigator>
+      </view>
+    </view>
+  </view>

@@ -1,0 +1,137 @@
+﻿<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+// import { service } from './config.js'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/login',
+      'pages/index',
+      'pages/evaluate',
+      'pages/evaluatePage',
+      'pages/statistics',
+
+      'pages/focus/smallclass',
+      'pages/focus/event',
+      'pages/focus/detail',
+      'pages/focus/addrecords',
+      'pages/focus/rank',
+      'pages/focus/describe',
+
+      'pages/main/search',
+      'pages/main/list',
+      'pages/main/detail',
+
+      'pages/borrow',
+      'pages/borrow/subscribe',
+      'pages/borrow/result',
+
+      'pages/user',
+      // 'pages/login',
+      'pages/user/records',
+      'pages/user/query',
+      'pages/user/return',
+      'pages/user/collect',
+      'pages/user/subscribe',
+      'pages/user/develop',
+      'pages/user/developRank',
+      'pages/user/rankDetail'
+
+    ],
+    window: {
+      navigationBarTitleText: '',
+      navigationBarTextStyle: 'white',
+      navigationBarBackgroundColor: '',
+      backgroundColor: '#eaeaea',
+      backgroundTextStyle: 'light',
+      enablePullDownRefresh: true
+    },
+    tabBar: {
+      color: '#AEADAD',
+      selectedColor: '#049BFF',
+      backgroundColor: '#fff',
+      borderStyle: 'black',
+      list: [{
+        pagePath: 'pages/index',
+        selectedIconPath: './images/tabbars/icon-mark-active@2x.png',
+        iconPath: './images/tabbars/icon-mark@2x.png',
+        text: '豆芽'
+      }, {
+        pagePath: 'pages/evaluate',
+        selectedIconPath: './images/tabbars/icon-shelf-active@2x.png',
+        iconPath: './images/tabbars/icon-shelf@2x.png',
+        text: '评价'
+      }, {
+        pagePath: 'pages/user',
+        selectedIconPath: './images/tabbars/icon-smile-active@2x.png',
+        iconPath: './images/tabbars/icon-smile@2x.png',
+        text: '我的'
+      }]
+    },
+    networkTimeout: {
+      request: 5000,
+      downloadFile: 10000
+    },
+    debug: true
+  }
+
+  globalData = {
+    user: null,
+    student: null, // 存放学生学号、密码
+    cart: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+  }
+
+  onLoad() {
+
+  }
+
+  onShow(options) {
+  }
+
+  /* ============= 工具方法（app没法用mixins，就再写一遍了） ============= */
+  isObject(item) {
+    return typeof item === 'object' && !this.isArray(item)
+  }
+  isArray(item) {
+    return Object.prototype.toString.apply(item) === '[object Array]'
+  }
+  isUndefined(item) {
+    return typeof item === 'undefined'
+  }
+
+  /* ========================= 更新缓存信息 ======================== */
+  $updateGlobalData(name, obj) {
+    // 校验: globalData
+    if (!this.globalData) return
+    // 校验: 操作字段
+    if (typeof name !== 'string' || name === '') return {}
+    // 取已有信息
+    const info = this.globalData[name] || {}
+    // 更新缓存
+    if (obj && this.isObject(obj)) {
+      // Object合并第一层
+      this.globalData[name] = Object.assign({}, info, obj)
+    } else if (!this.isUndefined(obj)) {
+      // 其他非undefined数据直接覆盖
+      this.globalData[name] = obj
+    }
+    this.$apply && this.$apply()
+    console.info(`[${obj ? 'UPDATE' : 'GET'} GlobalData ${name}]:`, this.globalData[name])
+    return this.globalData[name]
+  }
+}
+</script>
+
+<style lang="less">
+@import "./styles/weui/index.less";
+@import "./styles/custom/index.less";
+</style>

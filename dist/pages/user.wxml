@@ -1,0 +1,50 @@
+
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd userinfo clearfix">
+            <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+            <view class="userinfo-info">
+              <view class="userinfo-nickname">{{ stuName }}</view>
+              <view class="userinfo-status">{{ stuNumber }}</view>
+              <!-- <view class="userinfo-status">{{identity.type}}</view> -->
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <navigator url="/pages/user/records" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">点滴记录</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+          </view>
+        </navigator>
+        <navigator url="/pages/user/query" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">成绩查询</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <!-- <text class="color-green">{{packages.status}}</text> -->
+          </view>
+        </navigator>
+        <navigator url="/pages/user/develop" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">成长值</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <!-- <text class="color-green">{{packages.status}}</text> -->
+          </view>
+        </navigator>
+        <!-- <navigator url="/pages/user/collect" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">系统消息</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <text class="color-green">{{identity.collection || '0'}}</text>
+          </view>
+        </navigator> -->
+        <!-- <navigator url="/pages/login" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">豆芽儿</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <text class="color-green">{{identity.collection || '0'}}</text>
+          </view>
+        </navigator> -->
+      </view>
+    </view>
+  </view>

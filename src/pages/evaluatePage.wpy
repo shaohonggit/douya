@@ -1,0 +1,112 @@
+<template>
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">品德素质</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input type="text" class="weui-input" placeholder="请输入分数，0-100" @input="moralInput" value="{{moralScore}}"/>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">心理素质</view>
+          </view>
+            <view class="weui-cell__bd">
+              <input type="text" class="weui-input" placeholder="请输入分数，0-100" @input="mentalInput" value="{{mentalScore}}"/>
+            </view>
+        </view>
+      </view>
+    </view>
+    <button @tap="addScore" class="weui-btn btn-primary" type="primary">提交</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // import { service } from '../config.js'
+  import http from '../mixins/http'
+  import base from '../mixins/base'
+  import user from '../mixins/user'
+  
+  export default class pageUser extends wepy.page {
+    mixins = [base, http, user]
+    config = {
+      navigationBarTitleText: '豆芽儿',
+      enablePullDownRefresh: false
+    }
+    data = {
+      moralScore: [],
+      mentalScore: [],
+      mateNumber: [],
+      username: [],
+      usernumber: [],
+      class: []
+    }
+
+    onLoad(option) {
+      console.log('option:', option.lable)
+      this.mateNumber = option.lable
+      console.log('matenumber', this.mateNumber)
+      this.username = this.$parent.globalData.student.username
+      this.usernumber = this.$parent.globalData.student.number
+      this.class = this.$parent.globalData.student.class
+      console.log('username', this.username)
+      // this.recordHeading = option.broadHeading
+      // this.reEventID = option.eventID
+      // this.reEventName = option.eventName
+    }
+
+    addScore(option) {
+      // console.log(option.params)
+      wx.request({
+        url: 'http://localhost/douyalocal2019.4.9/evaluatePage.php?',
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        data: {
+          matenum: this.mateNumber,
+          usname: this.$parent.globalData.student.username,
+          usnumber: this.$parent.globalData.student.number,
+          usclass: this.$parent.globalData.student.class,
+          moral: this.moralScore,
+          mental: this.mentalScore
+        },
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          this.$apply()
+          this.$alert('添加成功')
+        },
+        fail: (res) => {
+          this.$alert('添加失败')
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    computed = {
+    }
+
+    methods = {
+      moralInput (e) {
+        this.moralScore = e.detail.value
+      },
+      mentalInput (e) {
+        this.mentalScore = e.detail.value
+      }
+    }
+}
+</script>
+
+<style lang="less">
+@import "../styles/custom/fn.less";
+
+.reset-label-left{
+    margin-right:1em;
+    padding-right: 1em;
+    border-right: 1rpx;
+}
+</style>

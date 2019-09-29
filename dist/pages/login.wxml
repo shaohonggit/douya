@@ -1,0 +1,32 @@
+
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">学号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input type="text" class="weui-input" placeholder="请输入学号" bindinput="numberInput" value="{{student.number}}"/>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">密码</view>
+          </view>
+            <view class="weui-cell__bd">
+              <input type="password" class="weui-input" placeholder="请输入密码" bindinput="passwordInput" value="{{student.password}}"/>
+            </view>
+        </view>
+      </view>
+    </view>
+    <button bindtap="denglu" class="weui-btn btn-primary" type="primary">登录</button>
+  </view>
+  <checkbox-group bindchange="rememberPwd">
+    <label class="checkbox" for="记住密码">
+      <checkbox checked="{{remember}}">记住密码</checkbox>
+      <view class="weui-agree__checkbox-icon">
+        <icon class="weui-agree__checkbox-icon-check" type="success_no_circle"  wx:if="{{remember}}"/>
+      </view>
+    </label>
+  </checkbox-group>

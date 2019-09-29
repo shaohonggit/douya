@@ -1,0 +1,94 @@
+<template>
+  <view class="weui-panel">
+  <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cells weui-cells_after-title" wx:for="{{rank}}" wx:key="{{item.number}}">
+                <view class="weui-cell__bd">{{item.username}}</view>
+                <view class="weui-cell__ft">{{item[type]}}</view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../../mixins/base'
+
+  export default class SmallClass extends wepy.page {
+    mixins = [base]
+    config = {
+      navigationBarTitleText: '小类'
+    }
+    data = {
+      rank: [ ],
+      type: 0
+    }
+
+    // computed = {
+    //   smallclass() {
+    //     return this.getObject(this.smallclass)
+    //   }
+    // }
+
+    // watch = {
+    //   smallclass (newValue, oldValue) {
+    //       // console.log(`sm: ${oldValue} -> ${newValue}`)
+    //   }
+    // }
+
+    // onReady() {
+    //   this.initPageData()
+    // }
+
+    onLoad(option) {
+      console.log(option)
+      this.type = option.index
+      console.log('hello', this.type)
+      // console.log(option.params)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/developRank.php?rankName=' + option.index,
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log(res.data)
+          // console.log(typeof (res.data))
+          // var serverdata = res.data
+          // console.log(serverdata[0].smallName)
+          // console.log(typeof (serverdata))
+          // console.log(res.data[1])
+          this.rank = res.data
+          console.log(this.rank[1][this.type])
+          this.$apply()
+          // console.log(this.smallclass)
+          // console.log('webdata:', this.webdata)
+        },
+        fail: (res) => {
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+
+    }
+    onReady() {
+
+    }
+    // initPageData() {
+
+    // }
+
+    methods = {
+    }
+
+    components = {
+    }
+  }
+</script>
+
+<style type="less">
+@import "../../styles/custom/fn.less";
+@import "../../styles/weui/base/fn.wxss";
+</style>

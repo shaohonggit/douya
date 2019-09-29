@@ -1,0 +1,24 @@
+
+  <view class="weui-panel">
+    <view class="page-index">
+      <!-- <view class="navbar">  
+        <text wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">{{item}}</text>  
+      </view> -->  
+<!--关注列表-->  
+      <!-- <view hidden="{{currentTab!==0}}">   -->
+        <view class="weui-panel">
+          <view class="weui-cells weui-cells_after-title"  wx:for="{{event}}" wx:key="{{item.listID}}">
+            <view class="weui-cell weui-cell_acces weui-cell__bd">{{item.recordName}}</view>
+          </view>
+        </view>
+    <!--   </view>   -->
+<!--成果查询-->  
+      <!-- <view hidden="{{currentTab!==1}}"> 
+        <view class="weui-panel">
+          <view class="weui-cells weui-cells_after-title" wx:for="{{achievements}}" wx:key="{{item.achvID}}">
+            <view class="weui-cell weui-cell_acces weui-cell__bd">{{item.achvName}}</view>
+          </view> 
+        </view>
+      </view>   -->
+    </view>
+  </view>

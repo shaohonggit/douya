@@ -1,0 +1,79 @@
+<template>
+  <view class="weui-panel">
+    <view class="weui-cells weui-cells_after-title" wx:for="{{smallclass}}" wx:key="{{item.smallclassID}}">
+      <navigator url="/pages/focus/event?index={{item.smallclassID}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">{{item.smallName}}</view>
+          <!-- 下面的view里是列表的说明内容 居右 -->
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <!-- <text>{{smallclass}}</text>
+            <text class="color-green">{{packages.times}}</text>
+            <text>次</text> -->
+          </view>
+      </navigator>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../../mixins/base'
+
+  export default class SmallClass extends wepy.page {
+    mixins = [base]
+    config = {
+      navigationBarTitleText: '小类'
+    }
+    data = {
+      smallclass: [ ]
+    }
+
+    onLoad(option) {
+      console.log(option)
+      // console.log(option.params)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/smallclass.php?broadHeading=' + option.params,
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log(res.data)
+          // console.log(typeof (res.data))
+          // var serverdata = res.data
+          // console.log(serverdata[0].smallName)
+          // console.log(typeof (serverdata))
+          // console.log(res.data[1])
+          this.smallclass = res.data
+          this.$apply()
+          // console.log(this.smallclass)
+          // console.log('webdata:', this.webdata)
+        },
+        fail: (res) => {
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+
+    }
+    onReady() {
+
+    }
+    // initPageData() {
+
+    // }
+
+    methods = {
+    }
+
+    components = {
+    }
+  }
+</script>
+
+<style type="less">
+@import "../../styles/custom/fn.less";
+@import "../../styles/weui/base/fn.wxss";
+</style>

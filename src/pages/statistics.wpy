@@ -1,0 +1,112 @@
+<template>
+  <view class="container">
+    <view class="article-content">
+      <view class="article-title">{{article[0].title}}</view>
+      <!-- <text>{{article.title}}</text> -->
+      <image src="{{article[0].image}}" class="article-image" mode="widthFill"/>
+        <text>{{article[0].content}}</text>
+        <!-- <text>{{article}}</text>
+        <image src="/images/swiper1.png"></image> -->
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../mixins/base'
+
+  export default class Statistics extends wepy.page {
+    mixins = [base]
+    config = {
+      navigationBarTitleText: '豆芽儿'
+    }
+    data = {
+      article: [ ]
+    }
+
+    onLoad(option) {
+      console.log('option', option)
+      // // console.log(option.params)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/statistics.php?id=' + option.id,
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log('res.data:', res.data)
+          console.log(typeof (res.data))
+          this.article = res.data
+          this.$apply()
+          // console.log(this.smallclass)
+          // console.log('webdata:', this.webdata)
+        },
+        fail: (res) => {
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+
+    }
+    onReady() {
+
+    }
+    // initPageData() {
+
+    // }
+
+    methods = {
+    }
+
+    components = {
+    }
+  }
+</script>
+<style type="less">
+@import "../styles/custom/fn.less";
+@import "../styles/weui/base/fn.wxss";
+.container {
+    padding: 0;
+    font-size: 14rpx;
+    background: #F0F4F3;
+    color: #000;
+}
+
+.article-title {
+    font-size: 38rpx;
+}
+
+.article-image {
+  width: 100%;
+  height:200px;
+  background-color: #e8e8e8;
+}
+.answerer {
+    position: relative;
+    margin: 0 auto;
+    width: 630rpx;
+    height: 90rpx;
+    padding: 30rpx;
+    background: #fff;
+    border: solid 1px #ebebeb;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px #bebebe;
+}
+
+.article-content{
+    padding: 30rpx 40rpx;
+    background: #ffffff;
+}
+.article-content text{
+    font-size: 32rpx;
+    color: #454545;
+    line-height: 44rpx;
+}
+.article-content image{
+    width: 100%;
+    margin: 20rpx 0;
+}
+</style>

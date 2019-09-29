@@ -1,0 +1,11 @@
+
+  <view class="container">
+    <view class="article-content">
+      <view class="article-title">{{article[0].title}}</view>
+      <!-- <text>{{article.title}}</text> -->
+      <image src="{{article[0].image}}" class="article-image" mode="widthFill"/>
+        <text>{{article[0].content}}</text>
+        <!-- <text>{{article}}</text>
+        <image src="/images/swiper1.png"></image> -->
+    </view>
+  </view>

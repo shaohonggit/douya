@@ -1,0 +1,126 @@
+<template>
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cell">
+        <view style="width: 100%;height: 100%;display: flex;justify-content:center;">成绩查询</view>
+      </view>
+    </view>
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">学年</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入学年，如：2017-2018" @input="yearInput" value="{{queryInfo.year}}"/>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">学期</view>
+          </view>
+            <view class="weui-cell__bd">
+              <input type="text" class="weui-input" placeholder="请输入学期，如：1" @input="termInput" value="{{queryInfo.term}}"/>
+            </view>
+        </view>
+      </view>
+    </view>
+    <button @tap="scoreQuery" class="weui-btn btn-primary" type="primary">查询</button>
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title" wx:for="{{scoreList}}" wx:key="{{item.courseName}}">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">{{item.courseName}}</view>
+          <view class="weui-cell__ft">{{item.grade}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // import { service } from '../config.js'
+  import http from '../../mixins/http'
+  import base from '../../mixins/base'
+  import user from '../../mixins/user'
+  
+  export default class pageUser extends wepy.page {
+    mixins = [base, http, user]
+    config = {
+      navigationBarTitleText: '豆芽儿',
+      enablePullDownRefresh: false
+    }
+
+    data = {
+      queryInfo: {
+        year: '',
+        term: ''
+      },
+      scoreList: [ ]
+      // webdata: [
+      // ]
+    }
+
+    scoreQuery(query) {
+      // this.$parent.student == null
+      if (this.queryInfo.year === '' || this.queryInfo.term === '') {
+        return this.$alert('请输入学期和学年')
+      } else {
+        // console.log(this.data)
+        wx.request({
+          url: 'https://douyaer.applinzi.com/query.php',
+          data: {
+            class: this.$parent.globalData.student.class,
+            number: this.$parent.globalData.student.number,
+            yearInfo: this.queryInfo.year,
+            termInfo: this.queryInfo.term
+          },
+          method: 'GET',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: (res) => {
+            console.log('denglu.success:')
+            console.log(res.data)
+            this.scoreList = res.data
+            this.$apply()
+          },
+          fail: (res) => {
+            console.log('fail to query:', res)
+          }
+        })
+      }
+    }
+
+    onLoad() {
+    }
+
+    onShow() {
+    }
+
+    onReady() {
+    }
+
+    computed = {
+    }
+
+    methods = {
+      yearInput (e) {
+        this.queryInfo.year = e.detail.value
+      },
+      termInput (e) {
+        this.queryInfo.term = e.detail.value
+      }
+    }
+}
+</script>
+
+<style type="less">
+@import "../../styles/custom/fn.less";
+
+.reset-label-left{
+    margin-right:1em;
+    padding-right: 1em;
+    border-right: 1rpx;
+}
+</style>

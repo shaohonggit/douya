@@ -1,0 +1,181 @@
+<template>
+  <view class="weui-panel" style="font-size: 32rpx">
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">项目名称：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input type="text" class="weui-input" placeholder="请输入奖项的全称" @input="nameInput" value="{{recordName}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">日期:</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <picker mode="date" value="{{date}}" start="2014-09-01" end="2020-09-01" bindchange="bindDateChange">
+          <view class="weui-input">{{date}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">说明:</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <textarea class="weui-textarea" auto-height="true" placeholder="若为团队项目，请另做说明" @input="noteInput" value="{{recordNote}}" />
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">分数：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input class="weui-input" placeholder="请输入分数" @input="scoreInput" value="{{recordScore}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">加分类别：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input class="weui-input" @input="nameInput" disabled="true" value="{{recordHeading}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_select">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label reset-label-left">级别：</view>
+      </view>          
+      <view class="weui-cell__bd ">
+        <picker bindchange="bindlevelChange" value="{{levelIndex}}" range="{{level}}">
+          <view class="weui-select weui-select_in-select-after">{{level[levelIndex]}}</view>
+        </picker>
+      </view>
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label reset-label-left">等级：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <picker bindchange="bindgradeChange" value="{{gradeIndex}}" range="{{grade}}">
+          <view class="weui-select weui-select_in-select-after">{{grade[gradeIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    <button @tap="focus" class="weui-btn btn-primary" type="primary">提交</button>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../../mixins/base'
+
+  export default class SmallClass extends wepy.page {
+    mixins = [base]
+    config = {
+      navigationBarTitleText: '添加纪实'
+    }
+    data = {
+      recordName: [ ],
+      date: '2018-5-1',
+      recordNote: [ ],
+      recordScore: [ ],
+      recordHeading: [ ],    // 项目所属大类类别，上层获取
+      // reEventID: [ ],   // 项目所属事项ID，上层获取
+      // reEventName: [ ],  // 项目所属事项名称，上层获取
+      level: ['国家级', '省级', '市级', '校级', '院级', '其他'],
+      grade: ['一等', '二等', '三等', '其他'],
+      // score: [[50, 35, 30], [30, 20, 15], [18, 12, 8], [12, 8, 5], [5, 3, 2]],
+      levelIndex: 0,
+      gradeIndex: 0
+      // type: 0
+    }
+
+    bindDateChange(e) {
+      this.date = e.detail.value
+    }
+    bindlevelChange(e) {
+      console.log('picker发生选择改变，携带值为', e.detail.value)
+      this.levelIndex = e.detail.value
+      console.log('picker发生选择改变，携带值为', this.level[this.levelIndex])
+    }
+    bindgradeChange(e) {
+      console.log('picker发生选择改变，携带值为', e.detail.value)
+      this.gradeIndex = e.detail.value
+      console.log('picker发生选择改变，携带值为', this.grade[this.gradeIndex])
+    }
+
+    onLoad(option) {
+      console.log('option:', option)
+      this.recordHeading = option.broadHeading
+      // this.reEventID = option.eventID
+      // this.reEventName = option.eventName
+    }
+
+    focus(option) {
+      // console.log(option.params)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/addrecords.php?',
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        data: {
+          username: this.$parent.globalData.student.username,
+          number: this.$parent.globalData.student.number,
+          class: this.$parent.globalData.student.class,
+          // eventID: this.reEventID,
+          // eventName: this.reEventName,
+          reHeading: this.recordHeading,
+          reName: this.recordName,
+          time: this.date,
+          note: this.recordNote,
+          score: this.recordScore,
+          level: this.level[this.levelIndex],
+          grade: this.grade[this.gradeIndex]
+        },
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          this.$apply()
+          this.$alert('添加成功')
+        },
+        fail: (res) => {
+          this.$alert('添加失败')
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+
+    }
+    onReady() {
+
+    }
+    // initPageData() {
+
+    // }
+
+    methods = {
+      nameInput (e) {
+        this.recordName = e.detail.value
+      },
+      noteInput(e) {
+        this.recordNote = e.detail.value
+      },
+      scoreInput(e) {
+        this.recordScore = e.detail.value
+      }
+    }
+
+    components = {
+    }
+  }
+</script>
+
+<style type="less">
+@import "../../styles/custom/fn.less";
+@import "../../styles/weui/base/fn.wxss";
+.reset-label-left{
+    margin-right: 1em;
+    padding-right: 1em;
+}
+</style>

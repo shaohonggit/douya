@@ -1,0 +1,24 @@
+
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">品德素质</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input type="text" class="weui-input" placeholder="请输入分数，0-100" bindinput="moralInput" value="{{moralScore}}"/>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">心理素质</view>
+          </view>
+            <view class="weui-cell__bd">
+              <input type="text" class="weui-input" placeholder="请输入分数，0-100" bindinput="mentalInput" value="{{mentalScore}}"/>
+            </view>
+        </view>
+      </view>
+    </view>
+    <button bindtap="addScore" class="weui-btn btn-primary" type="primary">提交</button>
+  </view>

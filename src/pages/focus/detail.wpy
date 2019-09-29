@@ -1,0 +1,105 @@
+<template>
+  <view class="page">
+    <view class="detail-area">
+      <view class="body-view">
+        <text>{{detail.discribe}}</text>
+      </view>
+    </view>
+    <view class='add_focus'>
+      <button  @tap="addRecords" class="btn">添加记录</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../../mixins/base'
+
+  export default class Detail extends wepy.page {
+    mixins = [base]
+    config = {
+      navigationBarTitleText: '事项内容'
+    }
+    data = {
+      detail: [ ]
+      // hasFocused: ''  // 用来判断btn是关注还是取消关注
+      // statusJudgement: false   // 中间变量,通过取反使btn在两种状态之间转换
+    }
+
+    addRecords(detail) {
+      wx.navigateTo({
+        url: '/pages/focus/addrecords?broadHeading=' + this.detail.broadHeading
+      })
+      // console.log(option)
+      // console.log(this.detail)
+      // console.log(this.$parent.globalData.student)
+    }
+    onLoad(option) {
+      console.log('这是事项的index', option)
+      // console.log(option.index)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/detail.php?eventID=' + option.index,
+        data: {
+          number: this.$parent.globalData.student.number
+        },
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log(res.data)
+          this.detail = res.data[0]
+          this.hasFocused = res.data[1]    // 服务端在focuslist里查询某事项,获取查询结果
+          this.$apply()
+        },
+        fail: (res) => {
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+
+    }
+    onReady() {
+    }
+    // initPageData() {
+
+    // }
+
+    methods = {
+    }
+
+    components = {
+    }
+  }
+</script>
+
+<style type="less">
+@import "../../styles/custom/fn.less";
+@import "../../styles/weui/base/fn.wxss";
+.add_focus{
+    width: 100%;
+    position: fixed;
+    bottom: 30rpx;
+}
+.btn{
+    margin-top: 30rpx;
+    width: 450rpx;
+    background: #14a1fd;
+    color: #fff;
+    border-radius: 70rpx;
+}
+.detail-area{
+  background: #ffffff;
+
+}
+.body-view{
+    font-size: 32rpx;
+    color: #454545;
+    line-height: 44rpx;
+    padding: 28rpx 28rpx; 
+    text-align: justify;
+}
+</style>

@@ -1,0 +1,120 @@
+<template>
+  <view class="weui-panel">
+    <view class="page-index">
+      <!-- <view class="navbar">  
+        <text wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" @tap="navbarTap">{{item}}</text>  
+      </view> -->  
+<!--关注列表-->  
+      <!-- <view hidden="{{currentTab!==0}}">   -->
+        <view class="weui-panel">
+          <view class="weui-cells weui-cells_after-title" wx:for="{{event}}" wx:key="{{item.listID}}">
+            <view class="weui-cell weui-cell_acces weui-cell__bd">{{item.recordName}}</view>
+          </view>
+        </view>
+    <!--   </view>   -->
+<!--成果查询-->  
+      <!-- <view hidden="{{currentTab!==1}}"> 
+        <view class="weui-panel">
+          <view class="weui-cells weui-cells_after-title" wx:for="{{achievements}}" wx:key="{{item.achvID}}">
+            <view class="weui-cell weui-cell_acces weui-cell__bd">{{item.achvName}}</view>
+          </view> 
+        </view>
+      </view>   -->
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import base from '../../mixins/base'
+  import http from '../../mixins/http'
+
+  export default class Records extends wepy.page {
+    mixins = [base, http]
+    config = {
+      navigationBarTitleText: '豆芽儿',
+      navigationBarTextStyle: 'white',
+      navigationBarBackgroundColor: ''
+    }
+    data = {
+      // navbar: ['关注列表', '成果查询'],
+      // currentTab: 0,
+      event: [ ]
+      // achievements: [ ]
+    }
+
+    onLoad(option) {
+      wx.request({
+        url: 'http://localhost/douyalocal2019.4.9/records.php',
+        data: {
+          number: this.$parent.globalData.student.number
+        },
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log(res.data)
+          // console.log(typeof (res.data[0]))
+          this.event = res.data
+          // this.achievements = res.data[1]
+          this.$apply()
+        },
+        fail: (res) => {
+          console.log('fail to fetch list:', res)
+        }
+      })
+    }
+    onReady() {
+    }
+
+    onPullDownRefresh() {
+    }
+
+    onReachBottom() {
+    }
+
+    // navbarTap(e) {
+    //   this.currentTab = e.currentTarget.dataset.idx
+    // }
+
+    methods = {
+    }
+  }
+</script>
+
+<style lang="less">
+@import "../../styles/custom/fn.less";
+@import "../../styles/weui/base/fn.wxss";
+
+.page-index{
+  // some style
+  display: flex;  
+  flex-direction: column;  
+  height: 100%; 
+}
+.navbar{  
+  flex: none;  
+  display: flex;  
+  background: #fff;  
+}  
+.navbar .item{  
+  position: relative;  
+  flex: auto;  
+  text-align: center;  
+  line-height: 80rpx;  
+}  
+.navbar .item.active{  
+  color: #049BFF;  
+}  
+.navbar .item.active:after{  
+  content: "";  
+  display: block;  
+  position: absolute;  
+  bottom: 0;  
+  left: 0;  
+  right: 0;  
+  height: 4rpx;  
+  background: #049BFF;  
+} 
+</style>

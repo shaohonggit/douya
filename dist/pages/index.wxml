@@ -1,0 +1,106 @@
+
+  <view class="page-index">
+    <view class="navbar">  
+      <text  wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">{{item}}</text>  
+    </view>  
+    
+  <swiper class="swiper" style="height:{{$Swiper$style_height}}" autoplay="{{$Swiper$autoplay}}" indicator-dots="{{$Swiper$indicatorDots}}" indicator-color="{{$Swiper$indicatorColor}}" indicator-active-color="{{$Swiper$indicatorActiveColor}}">
+    <block  wx:for="{{$Swiper$list}}" wx:key="index">
+      <swiper-item>
+        <navigator wx:if="{{item.url}}" url="{{item.url}}">
+          <image src="{{item.image}}" style="height:{{$Swiper$style_height}}" class="swiper-image" mode="widthFix"/>
+        </navigator>
+        <view wx:else style="height:{{$Swiper$style_height}}">
+          <!-- <image src="{{item.image}}" style="height:{{style_height}}" class="swiper-image" mode="aspectFit"/> -->
+          <image src="{{item.image}}" style="height:{{$Swiper$style_height}}" class="swiper-image" mode="widthFix"/>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+<!--首页-->  
+    <view hidden="{{currentTab!==0}}">  
+      
+  <view class="category clearfix">
+    <view class="page__bd">
+      <view class="weui-grids">
+          <block  wx:for="{{$Category$list}}" wx:key="index">
+            <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
+              <image class="weui-grid__icon" src="{{item.image}}"/>
+              <view class="weui-grid__label">{{item.title}}</view>
+            </navigator>
+          </block>
+    </view>
+    </view>
+    <!-- <block wx:for="{{list}}" wx:key="index">
+
+      <navigator wx:if="{{item.url}}" url="{{item.url}}" class="category-item" style="width:{{style_width}}">
+        <view class="category-icon-wrapper">
+          <image src="{{item.image}}" class="category-icon" mode="aspectFit"/>
+        </view>
+        <view class="category-text">{{item.title}}</view>
+      </navigator>
+      <view wx:else class="category-item" style="width:{{style_width}}">
+        <view class="category-icon-wrapper">
+          <image src="{{item.image}}" class="category-icon" mode="aspectFit"/>
+        </view>
+        <view class="category-text">{{item.title}}</view>
+      </view>
+
+    </block> -->
+  </view>
+ 
+      <!-- <BookList v-bind:list.sync="list" title="关注列表" v-bind:loading.sync="loading" v-bind:noMore.sync="noMoreList"></BookList> --> 
+    </view>  
+  
+<!--搜索-->  
+    <view hidden="{{currentTab!==1}}">  
+      <view class="weui-cells weui-cells_after-title"  wx:for="{{items}}" wx:key="{{item.id}}">
+        <navigator url="/pages/focus/rank?index={{item.id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">{{item.name}}</view>
+          <!-- 下面的view里是列表的说明内容 居右 -->
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <!-- <text>{{smallclass}}</text>
+            <text class="color-green">{{packages.times}}</text>
+            <text>次</text> -->
+          </view>
+        </navigator>
+      </view> 
+    </view>  
+  
+<!--我-->  
+    <view hidden="{{currentTab!==2}}">
+      <view class="container">
+        <view class="line"/>
+        <view class="cards-area">
+          <block wx:for="{{articleList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view bindtap="read" wx:if="{{item.articleID}}" data-wpyread-a="{{item.articleID}}">
+              
+  <view class="card">
+    <text class="title">{{item.title}}</text>
+    <view class="content-area">
+      <view class="left-area">
+        <text class="card-content">{{item.content}}</text>
+        <!-- <view class="info-area">
+          <text class="grade">{{grade}}</text>
+          <text class="words">{{words}}词</text>
+          <text class="reviews">{{reviews}}</text>
+        </view> -->
+      </view>
+      <view class="right-area">
+        <image src="{{item.image}}" class="thumbnail" mode="aspectFill"/>
+      </view>
+    </view>
+  </view>
+
+            </view>
+          </block>
+        </view>
+        <!-- <text class="info" wx:if="{{info}}">{{info}}</text> -->
+        <!-- <image wx:else class="info loading" src="/images/swiper1.png"/> -->
+      </view>  
+    </view>  
+    <!-- <SearchBar v-bind:placeholder.once="searchText"></SearchBar> -->
+    <!-- <Swiper v-bind:list.sync="swipers" height="280"></Swiper> -->
+    <!-- <Category v-bind:list.sync="categorys" col="4"></Category> -->
+  </view>

@@ -1,0 +1,152 @@
+<template>
+  <view class="page-user">
+    <view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">学号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input type="text" class="weui-input" placeholder="请输入学号" @input="numberInput" value="{{student.number}}"/>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label reset-label-left">密码</view>
+          </view>
+            <view class="weui-cell__bd">
+              <input type="password" class="weui-input" placeholder="请输入密码" @input="passwordInput" value="{{student.password}}"/>
+            </view>
+        </view>
+      </view>
+    </view>
+    <button @tap="denglu" class="weui-btn btn-primary" type="primary">登录</button>
+  </view>
+  <checkbox-group @change="rememberPwd">
+    <label class="checkbox" for="记住密码" >
+      <checkbox checked="{{remember}}">记住密码</checkbox>
+      <view class="weui-agree__checkbox-icon">
+        <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" wx:if="{{remember}}"></icon>
+      </view>
+    </label>
+  </checkbox-group>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // import { service } from '../config.js'
+  import http from '../mixins/http'
+  import base from '../mixins/base'
+  import user from '../mixins/user'
+  
+  export default class pageUser extends wepy.page {
+    mixins = [base, http, user]
+    config = {
+      navigationBarTitleText: '豆芽儿',
+      enablePullDownRefresh: false
+    }
+
+    data = {
+      student: {
+        number: '',
+        password: ''
+      },
+      isRemember: false
+      // webdata: [
+      // ]
+    }
+
+    onLoad() {
+      console.log(this.isRemember)
+      var self = this
+      wx.getStorage({
+        key: 'rememberInfo',
+        success (res) {
+          console.log(res.data)
+          console.log('wx.getStorage.success--this:', this)
+          self.student = res.data
+          console.log(self)
+          console.log(self.student)
+        }
+      })
+    }
+
+    denglu(student) {
+      // this.$parent.student == null
+      if (this.student.number === '' || this.student.password === '') {
+        return this.$alert('请输入学号和密码')
+      } else {
+        // console.log(this.data)
+        wx.request({
+          url: 'http://localhost/douyalocal/login.php?number=' + this.student.number,
+          // url: 'https://douyaer.applinzi.com/login.php?number=' + this.student.number,
+          // url: service.login,
+          method: 'GET',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: (res) => {
+            console.log('denglu.success:')
+            console.log(res.data)
+            // console.log(res.data[0].username)
+            // this.webdata = res.data[0]
+            var serverdata = res.data
+            if (this.student.number === serverdata.number && this.student.password === serverdata.password) {
+              // return this.$alert('登录成功')
+              this.$parent.globalData.student = serverdata
+              this.$apply()   // 在异步函数中更新数据的时候，必须手动调用$apply方法，才会触发脏数据检查流程的运行
+              console.log('globalData', this.$parent.globalData.student)
+              wx.switchTab({
+                url: './index'
+              })
+              return this.$alert('登录成功')
+            } else {
+              return this.$alert('学号或密码错误')
+            }
+          },
+          fail: (res) => {
+            console.log('denglu.fail:', res)
+          }
+        })
+      }
+    }
+
+    computed = {
+    }
+
+    methods = {
+      numberInput (e) {
+        this.student.number = e.detail.value
+      },
+      passwordInput (e) {
+        this.student.password = e.detail.value
+      },
+      rememberPwd (e) {
+        this.isRemember = !!e.detail.value.length
+        if (this.isRemember) {
+          console.log(this.isRemember)
+          wx.setStorage({
+            key: 'rememberInfo',
+            data: this.student
+          })
+        }
+      }
+    }
+}
+</script>
+
+<style type="less">
+@import "../styles/custom/fn.less";
+
+.reset-label-left{
+    margin-right:1em;
+    padding-right: 1em;
+    border-right: 1rpx;
+}
+.checkbox{
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40%;
+}
+</style>

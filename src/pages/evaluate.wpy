@@ -1,0 +1,93 @@
+<template>
+<view class="weui-panel">
+      <view class="weui-cells weui-cells_after-title" wx:for="{{student}}" wx:key="{{item.number}}">
+        <navigator url="/pages/evaluatePage?lable={{item.number}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">{{item.username}}</view>
+          <!-- 下面的view里是列表的说明内容 居右 -->
+          <view class="weui-cell__ft weui-cell__ft_in-access">
+            <!-- <text>{{smallclass}}</text>
+            <text class="color-green">{{packages.times}}</text>
+            <text>次</text> -->
+          </view>
+        </navigator>
+      </view>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // import { service } from '../config.js'
+  import http from '../mixins/http'
+  import base from '../mixins/base'
+  import user from '../mixins/user'
+
+  export default class pageUser extends wepy.page {
+    mixins = [base, http, user]
+    config = {
+      navigationBarTitleText: '评价',
+      enablePullDownRefresh: false
+    }
+    data = {
+      student: [ ],
+      class: null
+    }
+
+    onLoad(option) {
+      this.class = this.$parent.globalData.student.class
+      console.log(this.class)
+      console.log(option)
+      // console.log(option.params)
+      wx.request({
+        url: 'https://douyaer.applinzi.com/evaluate.php?class=' + this.class,
+        // url: 'https://www.v2ex.com/api/topics/show.json?id=520',
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: (res) => {
+          console.log(res.data)
+          // console.log(typeof (res.data))
+          // var serverdata = res.data
+          // console.log(serverdata[0].smallName)
+          // console.log(typeof (serverdata))
+          // console.log(res.data[1])
+          this.student = res.data
+          this.$apply()
+          // console.log(this.smallclass)
+          // console.log('webdata:', this.webdata)
+        },
+        fail: (res) => {
+          console.log('denglu.fail:', res)
+        }
+      })
+    }
+
+    onShow() {
+    }
+
+    onPullDownRefresh() {
+      this.initPageData()
+    }
+
+    // 初始化页面数据
+    initPageData() {
+      // 根据业务接口处理:获取最新个人信息并更新
+      // this.$get({url: service.user}, {
+      //   success: ({code, data}) => {},
+      //   fail: ({code, data}) => {}
+      // })
+    }
+
+    methods = {
+    }
+
+    components = {
+    }
+  }
+</script>
+
+<style type="less">
+@import "../styles/custom/fn.less";
+@import "../styles/weui/base/fn.wxss";
+
+</style>

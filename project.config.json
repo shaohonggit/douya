@@ -1,0 +1,12 @@
+{
+	"client": "./dist",
+	"svr": "./server",
+	"miniprogramRoot": "./dist",
+	"qcloudRoot": "./server",
+	"setting": {
+		"newFeature": true
+	},
+	"appid": "wxaa0f42e07ab64cdc",
+	"projectname": "douyaer",
+	"condition": {}
+}

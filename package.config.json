@@ -1,0 +1,16 @@
+{
+  "description": "project description",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wxaa0f42e07ab64cdc",
+  "projectname": "douyaer",
+  "client": "./dist",
+  "svr": "./server",
+  "qcloudRoot": "./server",
+  "miniprogramRoot": "./dist"
+}

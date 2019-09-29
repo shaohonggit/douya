@@ -1,0 +1,64 @@
+
+  <view class="weui-panel" style="font-size: 32rpx">
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">项目名称：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input type="text" class="weui-input" placeholder="请输入奖项的全称" bindinput="nameInput" value="{{recordName}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">日期:</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <picker mode="date" value="{{date}}" start="2014-09-01" end="2020-09-01" bindchange="bindDateChange">
+          <view class="weui-input">{{date}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">说明:</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <textarea class="weui-textarea" auto-height="true" placeholder="若为团队项目，请另做说明" bindinput="noteInput" value="{{recordNote}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">分数：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input class="weui-input" placeholder="请输入分数" bindinput="scoreInput" value="{{recordScore}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label reset-label-left">加分类别：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <input class="weui-input" bindinput="nameInput" disabled="true" value="{{recordHeading}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_select">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label reset-label-left">级别：</view>
+      </view>          
+      <view class="weui-cell__bd ">
+        <picker bindchange="bindlevelChange" value="{{levelIndex}}" range="{{level}}">
+          <view class="weui-select weui-select_in-select-after">{{level[levelIndex]}}</view>
+        </picker>
+      </view>
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label reset-label-left">等级：</view>
+      </view>
+      <view class="weui-cell__bd ">
+        <picker bindchange="bindgradeChange" value="{{gradeIndex}}" range="{{grade}}">
+          <view class="weui-select weui-select_in-select-after">{{grade[gradeIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    <button bindtap="focus" class="weui-btn btn-primary" type="primary">提交</button>
+</view>
